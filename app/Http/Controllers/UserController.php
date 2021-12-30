@@ -121,7 +121,7 @@ class UserController extends Controller
         ->join('model_has_roles', 'roles.id', 'model_has_roles.role_id')
         ->join('users', 'users.id', 'model_has_roles.model_id')
         ->where('users.email', '=',$request->email)
-        ->select('users.name', 'model_has_roles.role_id as rol', 'users.email')
+        ->select('users.id','users.name', 'model_has_roles.role_id as rol', 'users.email')
         ->get();
         return response()->json( [
             'token' => $token,
@@ -129,8 +129,9 @@ class UserController extends Controller
         ]);
     }
 
-    public function logout(Request $request) {
-        $user = User::where('email', $request->email)->first();
-        return $user->tokens()->delete()? true: false;
+    public function logout(Request $request, $id) {
+        $user = User::findOrFail($id);
+        $user->tokens()->where('name', $user->email)->delete();
+        return response()->json(['message' => 'Vuelve pronto '.$user->name.' <3']);
     }
 }

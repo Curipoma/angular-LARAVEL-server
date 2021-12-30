@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Peliculas;
+use App\Models\Films;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class PeliculasFactory extends Factory
+class FilmsFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Peliculas::class;
+    protected $model = Films::class;
 
     /**
      * Define the model's default state.

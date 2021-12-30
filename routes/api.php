@@ -4,36 +4,27 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\PeliculasController;
+use App\Http\Controllers\FilmsController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/login', [UserController::class, 'login']);
+Route::post('/users/login', [UserController::class, 'login']);
 Route::post('/users/store', [UserController::class, 'store']);
-Route::post('/logout', [UserController::class, 'logout']);
+Route::get('/films', [FilmsController::class, 'index'])->name('films');
 
-
-Route::get('/films', [PeliculasController::class, 'index']);
-
-Route::group(['middleware' => ['auth:sanctum','cors']], function() {
-    Route::get('/films/show/{id}', [PeliculasController::class, 'show']);
-    Route::post('/films/store', [PeliculasController::class, 'store']);
-    Route::put('/films/update/{id}', [PeliculasController::class, 'update']);
-    Route::delete('/films/destroy/{id}', [PeliculasController::class, 'destroy']);
+Route::group(['middleware' => ['auth:sanctum']], function() {
+    Route::get('/films/show/{id}', [FilmsController::class, 'show']);
+    Route::post('/films/store', [FilmsController::class, 'store']);
+    Route::post('/films/update/{id}', [FilmsController::class, 'update']);
+    Route::delete('/films/destroy/{id}', [FilmsController::class, 'destroy']);
+    Route::get('/films/download/image/{id}', [FilmsController::class, 'download_image']);
+    Route::get('/films/download/video/{id}', [FilmsController::class, 'download_video']);
     
     Route::get('/users', [UserController::class, 'index']);
     Route::get('/users/show/{id}', [UserController::class, 'show']);
     Route::put('/users/update/{id}', [UserController::class, 'update']);
     Route::delete('/users/destroy/{id}', [UserController::class, 'destroy']);
+    Route::get('/users/logout/{id}', [UserController::class, 'logout']);
 });
-
-
-// API Films
-
-// {
-//     "name":"Saw 4",
-//     "price":"7.00",
-//     "duration":"1h 30min"
-// }
